@@ -1,0 +1,27 @@
+{
+  "name": "meetafriend",
+  "version": "1.0.0",
+  "description": "web application for meeting new random people",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \\\"Error: no test specified\\\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shawngong/MeetAFriend.git"
+  },
+  "keywords": [
+    "node.js",
+    "app",
+    "meet",
+    "a",
+    "friend"
+  ],
+  "author": "shawn gong",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shawngong/MeetAFriend/issues"
+  },
+  "homepage": "https://github.com/shawngong/MeetAFriend#readme"
+}
