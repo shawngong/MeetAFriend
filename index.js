@@ -3,6 +3,26 @@ const path = require('path');
 const express = require('express');
 const exphbs = require('express-handlebars');
 const app = express();
+const request = require('request-promise');
+
+app.get('/:city', (req, res) => {
+  rp({
+    uri: 'http://apidev.accuweather.com/locations/v1/search',
+    qs: {
+      q: req.params.city,
+      apiKey: 'api-key'
+         // Use your accuweather API key here
+    },
+    json: true
+  })
+    .then((data) => {
+      res.render('index', data)
+    })
+    .catch((err) => {
+      console.log(err)
+      res.render('error')
+    })
+})
 
 app.engine('.hbs', exphbs({
   defaultLayout: 'main',
