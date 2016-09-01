@@ -1,3 +1,5 @@
+"use strict";
+
 require('./app/index');
 const path = require('path');
 const express = require('express');
@@ -5,8 +7,14 @@ const exphbs = require('express-handlebars');
 const request = require('request-promise');
 const passport = require('passport');
 const session = require('express-session');
+const http = require('http');
+const fs = require('fs');
+const bodyParser = require('body-parser');
 
-const app = express()
+const app = express();
+
+
+app.use(bodyParser());
 
 app.use(express.static(__dirname + 'views'));
 
@@ -26,6 +34,14 @@ app.get('/get', (request, response) => {
   })
 })
 
+app.post('/testPost', (request, response) => {
+  response.json({
+    id: request.body.id
+  })
+  //response.send(200);
+})
+
+
 app.get('/', (request, response) => {
   response.sendFile((path.join(__dirname + '/views/index.html')));
 })
@@ -39,12 +55,6 @@ app.use((err, request, response, next) => {
   console.log(err)
   response.status(500).send('Something broke!')
 })
-
-
-
-const _ = require('lodash');
-
-const fs = require('fs');
 
 function stats (file) {
   return new Promise((resolve, reject) => {
