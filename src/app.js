@@ -1,6 +1,5 @@
-"use strict";
+"use strict"
 
-require('./app/index');
 const path = require('path');
 const express = require('express');
 const exphbs = require('express-handlebars');
@@ -12,7 +11,6 @@ const fs = require('fs');
 const bodyParser = require('body-parser');
 
 const app = express();
-
 
 app.use(bodyParser());
 
