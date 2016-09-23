@@ -16,42 +16,39 @@ app.use(bodyParser());
 
 app.use(express.static(__dirname + 'views'));
 
-app.use((request, response, next) => {
-  console.log(request.headers)
+app.use((req, res, next) => {
+  console.log(req.headers)
   next()
 });
 
-app.use((request, response, next) => {
-  request.chance = Math.random()
+app.use((req, res, next) => {
+  req.chance = Math.random()
   next()
 })
 
-app.get('/get', (request, response) => {
-  response.json({
-    chance: request.chance
+app.get('/get', (req, res) => {
+  res.json({
+    chance: req.chance
   })
 })
 
-app.post('/testPost', (request, response) => {
-  response.json({
-    id: request.body.id
-  })
-  //response.send(200);
+app.post('/testPost', (req, res) => {
+  res.send({sup: req.body.id});
 })
 
 
-app.get('/', (request, response) => {
-  response.sendFile((path.join(__dirname + '/views/index.html')));
+app.get('/', (req, res) => {
+  res.sendFile((path.join(__dirname + '/views/index.html')));
 })
 
-app.get('/error', (request, response) => {
-  throw new Error('oops')
+app.get('/error', (req, res) => {
+  res.send(404);
 })
 
-app.use((err, request, response, next) => {
+app.use((err, req, res, next) => {
   // log the error, for now just console.log
-  console.log(err)
-  response.status(500).send('Something broke!')
+  console.log(err);
+  response.status(500).send('Something broke!');
 })
 
 function stats (file) {

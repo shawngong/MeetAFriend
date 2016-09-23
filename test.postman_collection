@@ -1,0 +1,71 @@
+{
+	"variables": [],
+	"info": {
+		"name": "test",
+		"_postman_id": "44ae9b15-7c58-4344-8670-44848643d234",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:3000/testPost",
+			"request": {
+				"url": "localhost:3000/testPost",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"HELLO\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/get",
+			"request": {
+				"url": "localhost:3000/get",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"HELLO\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/error",
+			"request": {
+				"url": "localhost:3000/error",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"HELLO\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
