@@ -1,5 +1,5 @@
 "use strict"
-
+const mysql = require('mysql');
 const path = require('path');
 const express = require('express');
 const exphbs = require('express-handlebars');
@@ -11,6 +11,25 @@ const fs = require('fs');
 const bodyParser = require('body-parser');
 
 const app = express();
+
+
+
+var connection = mysql.createConnection({
+  host     : 'localhost',
+  user     : 'admin',
+  password : 'secret',
+  database : 'meetAFriend'
+});
+
+connection.connect();
+
+connection.query('SELECT 1 + 1 AS solution', function(err, rows, fields) {
+  if (err) throw err;
+
+  console.log('The solution is: ', rows[0].solution);
+});
+
+connection.end();
 
 app.use(bodyParser());
 
@@ -33,7 +52,8 @@ app.get('/get', (req, res) => {
 })
 
 app.post('/testPost', (req, res) => {
-  res.send({sup: req.body.id});
+  console.log(req.body);
+  res.send(200);
 })
 
 
@@ -51,7 +71,7 @@ app.use((err, req, res, next) => {
   response.status(500).send('Something broke!');
 })
 
-function stats (file) {
+/* function stats (file) {
   return new Promise((resolve, reject) => {
     fs.stat(file, (err, data) => {
       if (err) {
@@ -66,6 +86,6 @@ Promise.all([
   stats('file1.md')
 ])
 .then((data) => console.log(data))
-.catch((err) => console.log(err))
+.catch((err) => console.log(err)) */
 
 module.exports = app;
