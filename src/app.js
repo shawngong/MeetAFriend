@@ -16,20 +16,24 @@ const app = express();
 
 var connection = mysql.createConnection({
   host     : 'localhost',
-  user     : 'admin',
-  password : 'secret',
-  database : 'meetAFriend'
+  user     : 'meetAfriend',
+  password : 'some_pass',
+  database : 'personas'
 });
 
-connection.connect();
-
-connection.query('SELECT 1 + 1 AS solution', function(err, rows, fields) {
-  if (err) throw err;
-
-  console.log('The solution is: ', rows[0].solution);
+connection.connect(function(err){
+  if(err){
+    console.log('Error connecting to Db');
+    return;
+  }
+  console.log('Connection established');
 });
 
-connection.end();
+connection.end(function(err) {
+  // The connection is terminated gracefully
+  // Ensures all previously enqueued queries are still
+  // before sending a COM_QUIT packet to the MySQL server.
+});
 
 app.use(bodyParser());
 
