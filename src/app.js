@@ -29,12 +29,6 @@ connection.connect(function(err){
   console.log('Connection established');
 });
 
-connection.end(function(err) {
-  // The connection is terminated gracefully
-  // Ensures all previously enqueued queries are still
-  // before sending a COM_QUIT packet to the MySQL server.
-});
-
 app.use(bodyParser());
 
 app.use(express.static(__dirname + 'views'));
@@ -50,9 +44,13 @@ app.use((req, res, next) => {
 })
 
 app.get('/get', (req, res) => {
-  res.json({
-    chance: req.chance
-  })
+  connection.query('SELECT * FROM employees', function(err,rows){ // get info about people
+    if(err) throw err;
+    console.log('Data received from Db:\n');
+    console.log(rows);
+    res.json(rows);
+  });
+
 })
 
 app.post('/testPost', (req, res) => {
@@ -73,6 +71,14 @@ app.use((err, req, res, next) => {
   // log the error, for now just console.log
   console.log(err);
   response.status(500).send('Something broke!');
+})
+
+app.get('/end', (req, res) => {
+  connection.end(function(err) {
+  // The connection is terminated gracefully
+  // Ensures all previously enqueued queries are still
+  // before sending a COM_QUIT packet to the MySQL server.
+  });
 })
 
 /* function stats (file) {
