@@ -58,6 +58,20 @@ app.post('/testPost', (req, res) => {
   res.send(200);
 })
 
+app.post('/insert', (req, res) => {
+  // adding data to db
+  const employee = {
+    name: req.body.name,
+    location: req.body.location
+  }
+  connection.query('INSERT INTO employees SET ?', employee, function(err,res){
+  if(err) throw err;
+
+  console.log('Last insert ID:', res.insertId);
+  });
+  res.send(200);
+});
+
 
 app.get('/', (req, res) => {
   res.sendFile((path.join(__dirname + '/views/index.html')));
@@ -70,7 +84,7 @@ app.get('/error', (req, res) => {
 app.use((err, req, res, next) => {
   // log the error, for now just console.log
   console.log(err);
-  response.status(500).send('Something broke!');
+  res.status(500).send('Something broke!');
 })
 
 app.get('/end', (req, res) => {
