@@ -60,16 +60,29 @@ app.post('/testPost', (req, res) => {
 
 app.post('/insert', (req, res) => {
   // adding data to db
+  let latestIdInserted;
   const employee = {
     name: req.body.name,
     location: req.body.location
   }
-  connection.query('INSERT INTO employees SET ?', employee, function(err,res){
+  connection.query('INSERT INTO employees SET ?', employee, function(err,result){
   if(err) throw err;
 
-  console.log('Last insert ID:', res.insertId);
+  latestIdInserted = res.insertId;
   });
-  res.send(200);
+  res.send(latestIdInserted);
+});
+
+app.post('/update', (req, res) => {
+  // update info in db for id key
+  connection.query(
+      'UPDATE employees SET name = ?,location = ? Where ID = ?',
+      [req.body.name, req.body.location, req.body.id],
+      function (err, result) {
+        if (err) throw err;
+    }
+  );
+  res.sendStatus(200);
 });
 
 
