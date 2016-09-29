@@ -76,10 +76,21 @@ app.post('/insert', (req, res) => {
 app.post('/update', (req, res) => {
   // update info in db for id key
   connection.query(
-      'UPDATE employees SET name = ?,location = ? Where ID = ?',
+      'UPDATE employees SET name = ?,location = ? Where id = ?',
       [req.body.name, req.body.location, req.body.id],
       function (err, result) {
         if (err) throw err;
+    }
+  );
+  res.sendStatus(200);
+});
+
+app.post('/destroy', (req, res) => {
+  connection.query(
+    'DELETE FROM employees WHERE id = ?',
+    [req.body.id],
+    function (err, result) {
+      if (err) throw err;
     }
   );
   res.sendStatus(200);
