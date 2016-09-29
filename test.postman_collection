@@ -10,7 +10,7 @@
 		{
 			"name": "localhost:3000/testPost",
 			"request": {
-				"url": "localhost:3000/testPost",
+				"url": "{{host}}/testPost",
 				"method": "POST",
 				"header": [
 					{
@@ -30,7 +30,7 @@
 		{
 			"name": "localhost:3000/get",
 			"request": {
-				"url": "localhost:3000/get",
+				"url": "{{host}}/get",
 				"method": "GET",
 				"header": [
 					{
@@ -50,7 +50,7 @@
 		{
 			"name": "localhost:3000/error",
 			"request": {
-				"url": "localhost:3000/error",
+				"url": "{{host}}/error",
 				"method": "GET",
 				"header": [
 					{
@@ -70,7 +70,7 @@
 		{
 			"name": "localhost:3000/insert",
 			"request": {
-				"url": "localhost:3000/insert",
+				"url": "{{host}}/insert",
 				"method": "POST",
 				"header": [
 					{
@@ -90,7 +90,7 @@
 		{
 			"name": "localhost:3000/update",
 			"request": {
-				"url": "localhost:3000/update",
+				"url": "{{host}}/update",
 				"method": "POST",
 				"header": [
 					{
