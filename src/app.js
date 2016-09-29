@@ -75,9 +75,24 @@ app.post('/insert', (req, res) => {
 
 app.post('/update', (req, res) => {
   // update info in db for id key
+  const updateArray = [];
+  if (!req.body.id) {
+    throw err;
+  }
+  let UpdateString = 'UPDATE employees SET ';
+  for (const key in req.body) {
+    if (key !== 'id'){
+      UpdateString += `${key} = ?,`;
+      updateArray.push(req.body[key]);
+    }
+  }
+  updateArray.push(req.body.id);
+  UpdateString = UpdateString.substring(0, UpdateString.length - 1);
+  UpdateString += ' Where id = ?';
+
   connection.query(
-      'UPDATE employees SET name = ?,location = ? Where id = ?',
-      [req.body.name, req.body.location, req.body.id],
+      UpdateString,
+      updateArray,
       function (err, result) {
         if (err) throw err;
     }
