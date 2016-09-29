@@ -66,6 +66,46 @@
 				"description": ""
 			},
 			"response": []
+		},
+		{
+			"name": "localhost:3000/insert",
+			"request": {
+				"url": "localhost:3000/insert",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"jasmine\",   \n    \"location\": \"cali\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/update",
+			"request": {
+				"url": "localhost:3000/update",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": 3,\n\t\"name\": \"jasmine\",   \n    \"location\": \"cali\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
 		}
 	]
 }
