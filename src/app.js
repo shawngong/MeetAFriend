@@ -2,6 +2,7 @@
 const mysql = require('mysql');
 const path = require('path');
 const express = require('express');
+const _ = require('lodash');
 const exphbs = require('express-handlebars');
 const request = require('request-promise');
 const passport = require('passport');
@@ -117,6 +118,10 @@ app.post('/select', (req, res) => {
     [req.body.id],
     function (err, result) {
       if (err) throw err;
+      if (_.isEmpty(result)) {
+        res.send('Not a valid person\'s id');
+        return;
+      }
       res.send(result);
     }
   );
