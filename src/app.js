@@ -111,6 +111,17 @@ app.post('/destroy', (req, res) => {
   res.sendStatus(200);
 });
 
+app.post('/select', (req, res) => {
+  connection.query(
+    'SELECT * FROM employees WHERE id = ?',
+    [req.body.id],
+    function (err, result) {
+      if (err) throw err;
+      res.send(result);
+    }
+  );
+  // res.sendStatus(200);
+});
 
 app.get('/', (req, res) => {
   res.sendFile((path.join(__dirname + '/views/index.html')));
