@@ -101,7 +101,47 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"id\": 3,\n\t\"name\": \"jasmine\",   \n    \"location\": \"cali\"\n}"
+					"raw": "{\n\t\"id\": 3,\n\t\"name\": \"jasmine\",   \n    \"location\": \"cali\",\n    \"bio\": \"My name is jasmine, I teach at Stanford. Ph'd Student.\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/destroy",
+			"request": {
+				"url": "{{host}}/destroy",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": 5\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:3000/select",
+			"request": {
+				"url": "{{host}}/select",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": 4\n}"
 				},
 				"description": ""
 			},
