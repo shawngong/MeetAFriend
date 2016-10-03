@@ -102,6 +102,9 @@ app.post('/update', (req, res) => {
 });
 
 app.post('/destroy', (req, res) => {
+  if (!req.body.id) {
+    throw err;
+  }
   connection.query(
     'DELETE FROM employees WHERE id = ?',
     [req.body.id],
@@ -113,6 +116,9 @@ app.post('/destroy', (req, res) => {
 });
 
 app.post('/select', (req, res) => {
+  if (!req.body.id) {
+    throw err;
+  }
   connection.query(
     'SELECT * FROM employees WHERE id = ?',
     [req.body.id],
