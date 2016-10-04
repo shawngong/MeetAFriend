@@ -1,4 +1,5 @@
-"use strict"
+'use strict';
+
 const mysql = require('mysql');
 const path = require('path');
 const express = require('express');
@@ -11,6 +12,7 @@ const http = require('http');
 const fs = require('fs');
 const bodyParser = require('body-parser');
 
+const Errors = require('./util/errors')
 const app = express();
 
 
@@ -116,22 +118,26 @@ app.post('/destroy', (req, res) => {
 });
 
 app.post('/select', (req, res) => {
-  if (!req.body.id) {
-    throw err;
-  }
-  connection.query(
-    'SELECT * FROM employees WHERE id = ?',
-    [req.body.id],
-    function (err, result) {
-      if (err) throw err;
-      if (_.isEmpty(result)) {
-        res.send('Not a valid person\'s id');
-        return;
-      }
-      res.send(result);
+  try {
+    if (!req.body.id) {
+      throw err;
     }
-  );
-  // res.sendStatus(200);
+    connection.query(
+      'SELECT * FROM employees WHERE id = ?',
+      [req.body.id],
+      function (err, result) {
+          if (err) throw err;
+          if (_.isEmpty(result)) {
+            throw new Error('fail');
+          }
+          res.send(result);
+        }
+      );
+    }
+    catch(err) {
+      console.log('error occurred ${err.name}');
+      res.sendStatus(200);
+    }
 });
 
 app.get('/', (req, res) => {
