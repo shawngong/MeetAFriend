@@ -53,16 +53,37 @@ app.get('/get', (req, res) => {
   connection.query('SELECT * FROM employees', function(err,rows){ // get info about people
     if(err) throw err;
     console.log('Data received from Db:\n');
-    console.log(rows);
     res.json(rows);
   });
+});
 
-})
+app.post('/getFirstLimit', (req, res) => {
+  let promise = new Promise((resolve, reject) => {
+    if (!req.body.limit) {
+      throw new Error('post request missing info');
+    }
+    connection.query('SELECT * FROM employees LIMIT ?', [req.body.limit], function(err,rows){ // get info about people
+      if(err) throw err;
+      console.log('Data received from Db:\n');
+      if (_.isEmpty(rows)){
+        reject(Error('DB Empty'));
+      }
+      resolve(rows);
+    });
+  });
+  promise.then((rows) => {
+    res.send(rows)
+  })
+  .catch((err) => {
+    console.log('error occurred ${err.name}');
+    res.sendStatus(403);
+  });
+});
 
 app.post('/testPost', (req, res) => {
   console.log(req.body);
   res.send(200);
-})
+});
 
 app.post('/insert', (req, res) => {
   // adding data to db
@@ -121,7 +142,7 @@ app.post('/destroy', (req, res) => {
 });
 
 app.post('/select', (req, res) => {
-  let promise = new Promise((res, rej) => {
+  let promise = new Promise((resolve, reject) => {
     if (!req.body.id) {
       throw err;
     }
@@ -142,7 +163,7 @@ app.post('/select', (req, res) => {
     res.send(result);
   }).catch((err) => {
       console.log('error occurred ${err.name}');
-      res.sendStatus(200);
+      res.sendStatus(403);
   });
 });
 
