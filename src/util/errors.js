@@ -20,4 +20,5 @@ class NotValidId extends ExtendableError {
   }
 }
 
+module.exports.ExtendableError = ExtendableError;
 module.exports.NotValidId = NotValidId;

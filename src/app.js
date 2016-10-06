@@ -15,7 +15,10 @@ const bodyParser = require('body-parser');
 const Errors = require('./util/errors')
 const app = express();
 
-
+/* process.on('uncaughtException', function (err) {
+  console.error(err);
+  console.log("Node NOT Exiting...");
+}); */
 
 var connection = mysql.createConnection({
   host     : 'localhost',
@@ -118,26 +121,29 @@ app.post('/destroy', (req, res) => {
 });
 
 app.post('/select', (req, res) => {
-  try {
+  let promise = new Promise((res, rej) => {
     if (!req.body.id) {
       throw err;
     }
     connection.query(
       'SELECT * FROM employees WHERE id = ?',
       [req.body.id],
-      function (err, result) {
-          if (err) throw err;
-          if (_.isEmpty(result)) {
-            throw new Error('fail');
+          function (err, result) {
+            if (err) throw err;
+            if (_.isEmpty(result)) {
+              throw new Errors.ExtendableError('fail');
+            }
+            resolve(result);
           }
-          res.send(result);
-        }
-      );
-    }
-    catch(err) {
+    )
+    reject(Error('It broke!'));
+  });
+  promise.then((result) => {
+    res.send(result);
+  }).catch((err) => {
       console.log('error occurred ${err.name}');
       res.sendStatus(200);
-    }
+  });
 });
 
 app.get('/', (req, res) => {
