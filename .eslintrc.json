@@ -1,0 +1,30 @@
+{
+  "parserOptions": {
+        "ecmaVersion": 6
+  },
+  "extends": "airbnb",
+  "plugins": [
+  ],
+  "rules":{
+    "comma-dangle": [2, "never"],
+    "yoda": 0,
+    "new-cap": 0,
+    "max-len": 0,
+    "import/no-extraneous-dependencies": 0,
+    "brace-style": [2, "stroustrup"],
+    "arrow-body-style": [2, "always"],
+    "no-multi-spaces": [2, { "exceptions": { "VariableDeclarator": true }}],
+    "no-use-before-define": [2, "nofunc"],
+    "no-param-reassign": 0,
+    "global-require": 0,
+    "no-plusplus": 0,
+    "class-methods-use-this": 0,
+    "valid-typeof": 0,
+    "no-underscore-dangle": 0,
+    "no-template-curly-in-string": 0
+  },
+  "env":{
+    "node": true,
+    "mocha": true
+  }
+}
