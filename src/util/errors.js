@@ -1,10 +1,8 @@
-'use strict';
-
 class ExtendableError extends Error {
-  constructor(message){
+  constructor(message) {
     super(message);
     this.message = message;
-    if (typeof Error.captureStackTrace === 'function'){
+    if (typeof Error.captureStackTrace === 'function') {
       Error.captureStackTrace(this, this.constructor);
     }
     else {
