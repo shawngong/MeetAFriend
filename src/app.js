@@ -183,10 +183,12 @@ app.use((err, req, res, next) => {
 
 app.get('/end', (req, res) => {
   connection.end(function(err) {
+  if (err) throw err;
   // The connection is terminated gracefully
   // Ensures all previously enqueued queries are still
   // before sending a COM_QUIT packet to the MySQL server.
   });
+  res.sendStatus(200);
 })
 
 /* function stats (file) {
