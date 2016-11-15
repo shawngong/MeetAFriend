@@ -1,18 +1,10 @@
-'use strict';
-
 const mysql = require('mysql');
 const path = require('path');
 const express = require('express');
 const _ = require('lodash');
-const exphbs = require('express-handlebars');
-const request = require('request-promise');
-const passport = require('passport');
-const session = require('express-session');
-const http = require('http');
-const fs = require('fs');
 const bodyParser = require('body-parser');
+const Errors = require('./util/errors');
 
-const Errors = require('./util/errors')
 const app = express();
 
 /* process.on('uncaughtException', function (err) {
@@ -20,15 +12,15 @@ const app = express();
   console.log("Node NOT Exiting...");
 }); */
 
-var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'meetAfriend',
-  password : 'some_pass',
-  database : 'personas'
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'meetAfriend',
+  password: 'some_pass',
+  database: 'personas'
 });
 
-connection.connect(function(err){
-  if(err){
+connection.connect((err) => {
+  if (err) {
     console.log('Error connecting to Db');
     return;
   }
@@ -37,45 +29,45 @@ connection.connect(function(err){
 
 app.use(bodyParser());
 
-app.use(express.static(__dirname + 'views'));
+app.use(express.static(path.join(__dirname, 'views')));
 
 app.use((req, res, next) => {
-  console.log(req.headers)
-  next()
+  console.log(req.headers);
+  next();
 });
 
 app.use((req, res, next) => {
-  req.chance = Math.random()
-  next()
-})
+  req.chance = Math.random();
+  next();
+});
 
 app.get('/get', (req, res) => {
-  connection.query('SELECT * FROM employees', function(err,rows){ // get info about people
-    if(err) throw err;
+  connection.query('SELECT * FROM employees', (err, rows) => { // get info about people
+    if (err) throw err;
     console.log('Data received from Db:\n');
     res.json(rows);
   });
 });
 
 app.post('/getFirstLimit', (req, res) => {
-  let promise = new Promise((resolve, reject) => {
+  const promise = new Promise((resolve, reject) => {
     if (!req.body.limit) {
       throw new Error('post request missing info');
     }
-    connection.query('SELECT * FROM employees LIMIT ?', [req.body.limit], function(err,rows){ // get info about people
-      if(err) throw err;
+    connection.query('SELECT * FROM employees LIMIT ?', [req.body.limit], (err, rows) => { // get info about people
+      if (err) throw err;
       console.log('Data received from Db:\n');
-      if (_.isEmpty(rows)){
+      if (_.isEmpty(rows)) {
         reject(Error('DB Empty'));
       }
       resolve(rows);
     });
   });
   promise.then((rows) => {
-    res.send(rows)
+    res.send(rows);
   })
   .catch((err) => {
-    console.log('error occurred ${err.name}');
+    console.log(`error occurred ${err.name}`);
     res.sendStatus(403);
   });
 });
@@ -91,11 +83,10 @@ app.post('/insert', (req, res) => {
   const employee = {
     name: req.body.name,
     location: req.body.location
-  }
-  connection.query('INSERT INTO employees SET ?', employee, function(err,result){
-  if(err) throw err;
-
-  latestIdInserted = res.insertId;
+  };
+  connection.query('INSERT INTO employees SET ?', employee, (err, result) => {
+    if (err) throw err;
+    latestIdInserted = result.insertId;
   });
   res.send(latestIdInserted);
 });
@@ -104,11 +95,11 @@ app.post('/update', (req, res) => {
   // update info in db for id key
   const updateArray = [];
   if (!req.body.id) {
-    throw err;
+    throw new Error();
   }
   let UpdateString = 'UPDATE employees SET ';
   for (const key in req.body) {
-    if (key !== 'id'){
+    if (key !== 'id') {
       UpdateString += `${key} = ?,`;
       updateArray.push(req.body[key]);
     }
@@ -120,66 +111,69 @@ app.post('/update', (req, res) => {
   connection.query(
       UpdateString,
       updateArray,
-      function (err, result) {
+      (err, result) => {
         if (err) throw err;
-    }
+        console.log(result);
+      }
   );
   res.sendStatus(200);
 });
 
 app.post('/destroy', (req, res) => {
   if (!req.body.id) {
-    throw err;
+    throw new Error();
   }
   connection.query(
     'DELETE FROM employees WHERE id = ?',
     [req.body.id],
-    function (err, result) {
+    (err, result) => {
       if (err) throw err;
+      console.log(result);
     }
   );
   res.sendStatus(200);
 });
 
 app.post('/select', (req, res) => {
-  let promise = new Promise((resolve, reject) => {
+  const promise = new Promise((resolve, reject) => {
     if (!req.body.id) {
-      throw err;
+      throw new Error();
     }
     connection.query(
       'SELECT * FROM employees WHERE id = ?',
       [req.body.id],
-          function (err, result) {
+          (err, result) => {
             if (err) throw err;
             if (_.isEmpty(result)) {
               throw new Errors.ExtendableError('fail');
             }
             resolve(result);
           }
-    )
+    );
     reject(Error('It broke!'));
   });
   promise.then((result) => {
     res.send(result);
   }).catch((err) => {
-      console.log('error occurred ${err.name}');
-      res.sendStatus(403);
+      console.log(`error occurred ${err.name}`);
+    res.sendStatus(403);
   });
 });
 
 app.get('/', (req, res) => {
-  res.sendFile((path.join(__dirname + '/views/index.html')));
-})
+  res.sendFile((path.join(__dirname, '/views/index.html')));
+});
 
 app.get('/error', (req, res) => {
   res.send(404);
-})
+});
 
 app.use((err, req, res, next) => {
   // log the error, for now just console.log
   console.log(err);
   res.status(500).send('Something broke!');
-})
+  next();
+});
 
 app.get('/end', (req, res) => {
   connection.end(function(err) {
@@ -189,7 +183,7 @@ app.get('/end', (req, res) => {
   // before sending a COM_QUIT packet to the MySQL server.
   });
   res.sendStatus(200);
-})
+});
 
 /* function stats (file) {
   return new Promise((resolve, reject) => {
