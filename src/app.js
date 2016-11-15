@@ -155,7 +155,7 @@ app.post('/select', (req, res) => {
   promise.then((result) => {
     res.send(result);
   }).catch((err) => {
-      console.log(`error occurred ${err.name}`);
+    console.log(`error occurred ${err.name}`);
     res.sendStatus(403);
   });
 });
@@ -176,8 +176,8 @@ app.use((err, req, res, next) => {
 });
 
 app.get('/end', (req, res) => {
-  connection.end(function(err) {
-  if (err) throw err;
+  connection.end((err) => {
+    if (err) throw err;
   // The connection is terminated gracefully
   // Ensures all previously enqueued queries are still
   // before sending a COM_QUIT packet to the MySQL server.
